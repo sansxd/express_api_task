@@ -1,14 +1,21 @@
 const MongoClient = require('mongodb').MongoClient;
+import mongoose from 'mongoose';
+import { uri } from './config';
+
 //url con conexion a la bd
-const uri =
-  'mongodb+srv://sergio:sans@mongo-lico-yjw0p.azure.mongodb.net/test?retryWrites=true&w=majority';
+// const uri =
+//   'mongodb+srv://sergio:sans@mongo-lico-yjw0p.azure.mongodb.net/test?retryWrites=true&w=majority';
 
 export async function conexion() {
   try {
+    const conexion = mongoose.connect(uri, { useNewUrlParser: true }, () => {
+      console.log('conexion con .env y mongoose');
+    });
     const client = await MongoClient.connect(uri, {
       useNewUrlParser: true
     });
     const database = client.db('testeo');
+
     console.log('Conectado a mongodb-Cloud-Atlas!');
     return database;
     // client.connect(err => {

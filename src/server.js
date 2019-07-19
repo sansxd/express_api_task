@@ -1,13 +1,14 @@
 import express, { json } from 'express';
-const { port } = require('./config');
-//rutas
+//importando el puerto desde config.js de .env
+import { port } from './config';
+//importando rutas
 import rutas from './routes/index.routes';
 import TareasRutas from './routes/tareas.routes';
 
 const app = express();
 
 //settings
-app.set('port', port || 3000);
+app.set('port', port);
 
 // console.log(`Your port is ${process.env.PORT}`);
 

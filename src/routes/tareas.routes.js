@@ -1,10 +1,10 @@
 import { Router } from 'express';
-const rutas = Router();
+const router = Router();
 //conexion de database
 import { conexion } from '../database';
 import { ObjectID } from 'mongodb';
 //metodo GET
-rutas.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   const db = await conexion();
   const result = await db
     .collection('tester')
@@ -16,7 +16,7 @@ rutas.get('/', async (req, res) => {
 });
 
 //metodo Post
-rutas.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
   const db = await conexion();
   const tarea = {
     titulo: req.body.titulo,
@@ -29,7 +29,7 @@ rutas.post('/', async (req, res) => {
   res.json(resultado.ops[0]);
 });
 
-rutas.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     //conexion a la mongodb
@@ -49,7 +49,7 @@ rutas.get('/:id', async (req, res) => {
 });
 
 //motodo Delte
-rutas.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     //conexion a la mongodb
@@ -70,7 +70,7 @@ rutas.delete('/:id', async (req, res) => {
 });
 
 //motodo Delte
-rutas.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const actualizarTarea = {
@@ -96,4 +96,4 @@ rutas.put('/:id', async (req, res) => {
   }
 });
 
-export default rutas;
+export default router;

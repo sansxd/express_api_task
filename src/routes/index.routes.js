@@ -1,8 +1,10 @@
 import { Router } from 'express';
-const rutas = Router();
+const router = Router();
 
-rutas.get('/', (req, res) => {
+router.get('/', (req, res) => {
   res.send('bienvenido a la Api del autismo');
 });
-
-export default rutas;
+//buscar diferencias entre esto
+// export default router;
+// y esto
+module.exports = router;
