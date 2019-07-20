@@ -4,8 +4,13 @@ import { port } from './config';
 //importando rutas
 import rutas from './routes/index.routes';
 import TareasRutas from './routes/tareas.routes';
+import bodyParser from 'body-parser';
+//conexion a la bd
+import { conexion } from './database';
 
 const app = express();
+//haciendo andar la conexion
+conexion();
 
 //settings
 app.set('port', port);
@@ -13,7 +18,8 @@ app.set('port', port);
 // console.log(`Your port is ${process.env.PORT}`);
 
 //middlewares
-app.use(json());
+// app.use(json());
+app.use(bodyParser.json());
 
 //usando rutas
 app.use(rutas);

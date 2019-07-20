@@ -1,99 +1,108 @@
 import { Router } from 'express';
 const router = Router();
-//conexion de database
-import { conexion } from '../database';
-import { ObjectID } from 'mongodb';
-//metodo GET
-router.get('/', async (req, res) => {
-  const db = await conexion();
-  const result = await db
-    .collection('tester')
-    .find({})
-    .toArray();
-  console.log(result);
+//import model tareas
+const Tarea = require('../../models/tareas');
 
-  res.json(result);
+//METODO GET
+router.get('/', async (req, res) => {
+  // const db = await conexion();
+  try {
+    const tareas = await Tarea.find();
+    res.json(tareas);
+  } catch (error) {
+    res.json({ message: error });
+    console.log('from to get: ', error);
+  }
 });
 
-//metodo Post
+//METODO POST
 router.post('/', async (req, res) => {
-  const db = await conexion();
-  const tarea = {
+  // const db = await conexion();
+  const tarea = new Tarea({
     titulo: req.body.titulo,
     descripcion: req.body.descripcion
-  };
-  //insertando la tarea obtenida
-  const resultado = await db.collection('tester').insertOne(tarea);
+  });
 
-  console.log(req.body);
-  res.json(resultado.ops[0]);
+  try {
+    const saveTarea = await tarea.save();
+    res.json(saveTarea);
+  } catch (error) {
+    res.json({
+      message: error
+    });
+  }
+
+  //insertando la tarea obtenida
+  // const resultado = await db.collection('tester').insertOne(tarea);
+
+  // console.log(req.body);
+  // res.json(resultado.ops[0]);
 });
 
 router.get('/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    //conexion a la mongodb
-    const db = await conexion();
-    //buscando el id y trayendo la informacion
-    const resultado = await db
-      .collection('tester')
-      .findOne({ _id: ObjectID(id) });
+    const findTarea = await Tarea.findById(req.params.id);
+    res.json(findTarea);
 
-    console.log(resultado);
-    res.json(resultado);
+    // const { id } = req.params;
+    // //conexion a la mongodb
+    // const db = await conexion();
+    // //buscando el id y trayendo la informacion
+    // const resultado = await db
+    //   .collection('tester')
+    //   .findOne({ _id: ObjectID(id) });
+
+    // console.log(resultado);
+    // res.json(resultado);
   } catch (error) {
     console.log('El error es: ', error);
 
-    res.json('error');
+    res.json({
+      message: error
+    });
   }
 });
 
-//motodo Delte
+//METODO DELETE
 router.delete('/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    //conexion a la mongodb
-    const db = await conexion();
-    //buscando el id y trayendo la informacion
-    const resultado = await db
-      .collection('tester')
-      .deleteOne({ _id: ObjectID(id) });
-    res.json({
-      message: `Tarea ${id} Eliminada`,
-      resultado
-    });
+    const deleteTarea = await Tarea.deleteOne({ _id: req.params.id });
+    res.json(deleteTarea);
+    // const { id } = req.params;
+    // //conexion a la mongodb
+    // const db = await conexion();
+    // //buscando el id y trayendo la informacion
+    // const resultado = await db
+    //   .collection('tester')
+    //   .deleteOne({ _id: ObjectID(id) });
+    // res.json({
+    //   message: `Tarea ${id} Eliminada`,
+    //   resultado
+    // });
   } catch (error) {
     console.log('El error es: ', error);
 
-    res.json({ message: 'Error' });
+    res.json({ message: error });
   }
 });
 
-//motodo Delte
+//METODO UPDATE
 router.put('/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    const actualizarTarea = {
+    const updateBodyTarea = {
       titulo: req.body.titulo,
       descripcion: req.body.descripcion
     };
-    //conexion a la mongodb
-    const db = await conexion();
-    //buscando el id y trayendo la informacion
-    const resultado = await db.collection('tester').updateOne(
-      { _id: ObjectID(id) },
-      {
-        $set: actualizarTarea
-      }
+    const updateTarea = await Tarea.updateOne(
+      { _id: req.params.id },
+      { $set: updateBodyTarea }
     );
-    res.json({
-      message: `Tarea ${id} Actualizada`
-    });
+    res.json(updateTarea);
   } catch (error) {
     console.log('El error es: ', error);
 
-    res.json({ message: 'Error' });
+    res.json({ message: error });
   }
 });
 
-export default router;
+module.exports = router;
