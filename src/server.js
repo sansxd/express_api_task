@@ -7,21 +7,20 @@ import TareasRutas from './routes/tareas.routes';
 import bodyParser from 'body-parser';
 //conexion a la bd
 import { conexion } from './database';
+import cors from 'cors';
 
 const app = express();
 //haciendo andar la conexion
 conexion();
 
-//settings
+//SETTINGS
 app.set('port', port);
 
-// console.log(`Your port is ${process.env.PORT}`);
-
-//middlewares
-// app.use(json());
+//MIDDLEWARES
 app.use(bodyParser.json());
+app.use(cors());
 
 //usando rutas
 app.use(rutas);
 app.use('/tareas', TareasRutas);
-export default app;
+module.exports = app;

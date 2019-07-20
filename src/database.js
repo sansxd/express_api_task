@@ -16,6 +16,7 @@ export async function conexion() {
     await mongoose.connect(uri, {
       useNewUrlParser: true
     });
+    console.log('conectado a DB de mongodb atlas');
   } catch (error) {
     handleError(error);
   }

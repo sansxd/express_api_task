@@ -1,15 +1,13 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
 var _express = require("express");
 
-var rutas = (0, _express.Router)();
-rutas.get('/', function (req, res) {
-  res.send('bienvenido a la Api del autismo');
-});
-var _default = rutas;
-exports["default"] = _default;
+var router = (0, _express.Router)();
+router.get('/', function (req, res) {
+  res.send('bienvenido a la Api de testeo');
+  console.log('pasando por autismo');
+}); //buscar diferencias entre esto
+// export default router;
+// y esto
+
+module.exports = router;
