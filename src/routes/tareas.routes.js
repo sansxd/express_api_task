@@ -1,8 +1,26 @@
 import { Router } from 'express';
+const faker = require('faker');
+faker.locale = 'es';
+
 const router = Router();
 //import model tareas
-const Tarea = require('../../models/tareas');
+const Tarea = require('../models/tareas');
 
+//creando datos con faker y guardandolos
+router.get('/create', async (req, res) => {
+  try {
+    for (let index = 0; index < 50; index++) {
+      await Tarea.create({
+        titulo: faker.lorem.word(),
+        descripcion: faker.lorem.paragraph(20)
+      });
+    }
+    res.send('50 registros creados');
+  } catch (error) {
+    res.json({ message: error });
+    console.log('from to get: ', error);
+  }
+});
 //METODO GET
 router.get('/', async (req, res) => {
   try {
@@ -11,6 +29,19 @@ router.get('/', async (req, res) => {
   } catch (error) {
     res.json({ message: error });
     console.log('from to get: ', error);
+  }
+});
+//buscar determinada tarea
+router.get('/:id', async (req, res) => {
+  try {
+    const findTarea = await Tarea.findById(req.params.id);
+    res.json(findTarea);
+  } catch (error) {
+    console.log('El error es: ', error);
+
+    res.json({
+      message: error
+    });
   }
 });
 
@@ -22,22 +53,10 @@ router.post('/', async (req, res) => {
   });
 
   try {
+    //guardamos la tarea
     const saveTarea = await tarea.save();
     res.json(saveTarea);
   } catch (error) {
-    res.json({
-      message: error
-    });
-  }
-});
-
-router.get('/:id', async (req, res) => {
-  try {
-    const findTarea = await Tarea.findById(req.params.id);
-    res.json(findTarea);
-  } catch (error) {
-    console.log('El error es: ', error);
-
     res.json({
       message: error
     });

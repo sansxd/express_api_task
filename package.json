@@ -13,11 +13,18 @@
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@hapi/joi": "^15.1.0",
+    "@types/cors": "^2.8.5",
+    "@types/faker": "^4.1.5",
+    "@types/mongoose": "^5.5.11",
+    "@types/morgan": "^1.7.36",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
-    "mongodb": "^3.3.0-beta2"
+    "faker": "^4.1.0",
+    "mongodb": "^3.3.0-beta2",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
