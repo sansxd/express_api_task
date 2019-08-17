@@ -2,7 +2,7 @@ import express from 'express';
 //importando el puerto desde config.js de .env
 import { port } from './config';
 //importando rutas
-import rutaPrincipal from './routes/index.routes';
+import routeIndex from './routes/index.routes';
 import TareasRutas from './routes/tareas.routes';
 import bodyParser from 'body-parser';
 //conexion a la bd
@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //usando rutas
-app.use(rutaPrincipal);
+app.use(routeIndex);
 app.use('/api/tareas', TareasRutas);
 // module.exports = app;
 export default app;
